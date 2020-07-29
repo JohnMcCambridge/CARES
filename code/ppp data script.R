@@ -32,15 +32,6 @@ adbs <- all_data_by_state
 
 # Clean -------------------------------------------------------------------
 
-### Duplicates
-
-## Takes a long time! Be patient.
-
-# sum(duplicated(adbs))
-# 4353 exact duplicates
-
-adbs=adbs[!duplicated(adbs),]
-
 ### Data Check: ZipCodes ###
 
 # generate table to check lengths and also run a simple grep ZIP validator

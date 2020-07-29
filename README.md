@@ -1,14 +1,35 @@
 # CARES
+
 CARES Act data: PPP, EIDL and more.
 
 Data downloaded from the [Small Business Administration's DropBox](https://sba.app.box.com/s/tvb0v5i57oa8gc6b5dcm9cyw7y2ms6pp)
 
 ## PPP Data Dictionary
 
-### Glimpse
+### Structure
 
 ### Missingness
 
-| LoanRange| BusinessName| Address| City| State| Zip| NAICSCode| BusinessType| RaceEthnicity| Gender| Veteran| NonProfit| JobsRetained| DateApproved| Lender| CD| LoanAmount|
-|---------:|------------:|-------:|----:|-----:|---:|---------:|------------:|-------------:|------:|-------:|---------:|------------:|------------:|------:|--:|----------:|
-|   4219826|      4219827| 4219826|    1|     0| 198|    132966|         4697|             0|      0|       0|   4699363|       323836|            0|      0|  0|     661209|
+Below is a table with the number and % of rows with missing data for each 
+variable.
+
+|variable      | n_missing| perc_missing|
+|:-------------|---------:|------------:|
+|LoanRange     |   4224170|         86.5|
+|BusinessName  |   4224171|         86.5|
+|Address       |   4224170|         86.5|
+|City          |         1|          0.0|
+|State         |         0|          0.0|
+|Zip           |       224|          0.0|
+|NAICSCode     |    133527|          2.7|
+|BusinessType  |      4723|          0.1|
+|RaceEthnicity |         0|          0.0|
+|Gender        |         0|          0.0|
+|Veteran       |         0|          0.0|
+|NonProfit     |   4703708|         96.3|
+|JobsRetained  |    324122|          6.6|
+|DateApproved  |         0|          0.0|
+|Lender        |         0|          0.0|
+|CD            |         0|          0.0|
+|LoanAmount    |    661218|         13.5|
+
