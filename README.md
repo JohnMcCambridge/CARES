@@ -8,10 +8,10 @@ Data downloaded from the [Small Business Administration's DropBox](https://sba.a
 
 ### Structure
 
-### Missingness
+Rows: 4,885,388
+Potential duplicate rows: ~4,353 (still investigating)
 
-Below is a table with the number and % of rows with missing data for each 
-variable.
+Variables:
 
 |variable      | n_missing| perc_missing|
 |:-------------|---------:|------------:|
@@ -32,4 +32,3 @@ variable.
 |Lender        |         0|          0.0|
 |CD            |         0|          0.0|
 |LoanAmount    |    661218|         13.5|
-
