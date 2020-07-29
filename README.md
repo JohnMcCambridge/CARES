@@ -5,3 +5,10 @@ Data downloaded from the [Small Business Administration's DropBox](https://sba.a
 
 ## PPP Data Dictionary
 
+### Glimpse
+
+### Missingness
+
+| LoanRange| BusinessName| Address| City| State| Zip| NAICSCode| BusinessType| RaceEthnicity| Gender| Veteran| NonProfit| JobsRetained| DateApproved| Lender| CD| LoanAmount|
+|---------:|------------:|-------:|----:|-----:|---:|---------:|------------:|-------------:|------:|-------:|---------:|------------:|------------:|------:|--:|----------:|
+|   4219826|      4219827| 4219826|    1|     0| 198|    132966|         4697|             0|      0|       0|   4699363|       323836|            0|      0|  0|     661209|
