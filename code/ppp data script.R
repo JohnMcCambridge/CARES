@@ -3,13 +3,19 @@
 # packages used with this script last updated: July 24th 2020
 # PPP data downloaded 642pm BST, July 22nd 2020 from: https://sba.app.box.com/s/tvb0v5i57oa8gc6b5dcm9cyw7y2ms6pp 
 
+
+# Setup -------------------------------------------------------------------
+
 rm(list=ls()) # clean up workspace before beginning
 
 # load all needed libraries upfront
 library("tidyverse") # used for merging the various CSV files and manipulating the data
 
-# set your local working directory (until we get a shared location)
-setwd("C:/Users/John/Dropbox/CARES Act/PPP/")
+#TODO: set your local working directory (until we get a shared location)
+# setwd("C:/Users/John/Dropbox/CARES Act/PPP/")
+
+
+# Read --------------------------------------------------------------------
 
 # ideally we will use standardized directory structure atop the working directory, specified here for All Data by State, a direct extract of the SBA data zip files
 reldir <- "data/All Data by State/All Data by State"
@@ -22,6 +28,18 @@ all_data_by_state <- map_df(dat_files, ~read_csv(.x, col_types = cols(.default =
                               mutate(source_file = str_remove_all(.x, "data/20200722/All Data by State/All Data by State/"))
                            )
 adbs <- all_data_by_state
+
+
+# Clean -------------------------------------------------------------------
+
+### Duplicates
+
+## Takes a long time! Be patient.
+
+# sum(duplicated(adbs))
+# 4353 exact duplicates
+
+adbs=adbs[!duplicated(adbs),]
 
 ### Data Check: ZipCodes ###
 
@@ -91,5 +109,17 @@ adbs <- adbs %>%
                                           is.na(JobsRetained) ~ NA_character_,
                                           TRUE ~ "Unknown"))   
 
-adbs_fl <- adbs[adbs$State=="FL",]
-write.csv(adbs_fl,"adbs_fl.csv")
+
+# Florida Subset ----------------------------------------------------------
+
+# adbs_fl <- adbs[adbs$State=="FL",]
+# 
+# # Write to CSV
+# write.csv(adbs_fl,
+#           "data/adbs_fl.csv")
+
+# Cleanup -----------------------------------------------------------------
+
+rm(dat_files, 
+   all_data_by_state,
+   reldir)
