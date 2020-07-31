@@ -10,15 +10,12 @@ rm(list=ls()) # clean up workspace before beginning
 
 # load all needed libraries upfront
 library("tidyverse") # used for merging the various CSV files and manipulating the data
-
-#TODO: set your local working directory (until we get a shared location)
-# setwd("C:/Users/John/Dropbox/CARES Act/PPP/")
-
+library("stringdist") # for fuzzy matching
 
 # Read --------------------------------------------------------------------
 
 # ideally we will use standardized directory structure atop the working directory, specified here for All Data by State, a direct extract of the SBA data zip files
-reldir <- "data/All Data by State/All Data by State"
+reldir <- "../data/All Data by State/All Data by State"
 
 dat_files <- list.files(reldir, full.names = T, recursive = T, pattern = ".*.csv") # scan through all directories and subdirectories for all CSVs
 
@@ -47,14 +44,28 @@ table(grepl("\\d{5}([ \\-]\\d{4})?", adbs$Zip), nchar(adbs$Zip),useNA = "always"
 # result indicates that all present values are of valid length as simple 5 digit zips, however 224 are missing entirely and are recorded in original data as NAs
 # let's code this into a new variable, so that we can later evaluate each row for validation along various checks
 adbs <- adbs %>% 
-             mutate(Zip_Valid_Format = case_when(grepl("\\d{5}", Zip)        ~ "Pass: 5 Digit Format",
-                                                 grepl("\\d{5}-\\d{4}", Zip) ~ "Pass: 5dash4 Digit Format ",
-                                                 TRUE ~ "Fail"))
-             
-                        
-                        
-# next let's use a table to determine if the zips codes are 'real' rather than just 'valid', and if they map to the specified states recorded in row or source csv name
+  mutate(Zip_Valid_Format = case_when(grepl("\\d{5}", Zip)        ~ "Pass: 5 Digit Format",
+                                      grepl("\\d{5}-\\d{4}", Zip) ~ "Pass: 5dash4 Digit Format ",
+                                      TRUE ~ "Fail"))
 
+
+
+
+### Data Check: City Names ###
+# check City values against a large list of likely names, via: https://simplemaps.com/data/us-cities
+uscities <- read.csv("../data/simplemaps_uscities_basicv1.6/uscities.csv")
+
+citydict <- sort(unique(tolower(gsub("[[:digit:][:space:][:punct:]]", "", uscities$city))))
+adbscities <- sort(unique(tolower(gsub("[[:digit:][:space:][:punct:]]", "", adbs$City))))
+
+citymatch_01 <- amatch(adbscities, citydict, method = "lv", maxDist = 0.1)
+citymatch_05 <- amatch(adbscities, citydict, method = "lv", maxDist = 0.5)
+citymatch_10 <- amatch(adbscities, citydict, method = "lv", maxDist = 1.0)
+
+adbscities <- as.data.frame(adbscities)
+adbscities$match_01 <- citydict[citymatch_01]
+adbscities$match_05 <- citydict[citymatch_05]
+adbscities$match_10 <- citydict[citymatch_10]
 
 # confirm all Jobs Retained values are integers (whole numbers) or NAs
 summary(near(as.numeric(adbs$JobsRetained), as.integer(as.numeric(adbs$JobsRetained))))
