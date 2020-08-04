@@ -39,6 +39,17 @@ adbs <- adbs %>%
 
 table(adbs$Zip_Valid_Format, useNA = "always")
 
+threedigitzips <- read.csv("../data/usps/three digit zips.csv") # a source built using L003 3-Digit ZIP Code Prefix Groups—3-Digit Scheme Sortation from https://pe.usps.com/Archive/HTML/DMMArchive20050106/print/L003.htm
+
+threedigitzips$Zip3 <- substr(sub(".* (.*)", "\\1", threedigitzips$ThreeDigitZips), start = 1, stop = 3)
+threedigitzips$State <- sub(".* (.*) .*", "\\1", threedigitzips$ThreeDigitZips)
+
+# check that State values match to the Zip code, using first 3 digits
+table(adbs$Zip[!(substr(adbs$Zip, start = 1, stop = 3) %in% threedigitzips$Zip3)]) # sadly this list is not fully up to date, will need to rebuild with a better source file (not Census or USPS)
+
+zpd <- read.csv("../data/census/zipcodeDemographics.csv")
+length(adbs$Zip[!(adbs$Zip %in% sprintf("%05d", zipcodeDemographics$GEOID))]) # showing that ZCATs do not map perfectly to ZIPs, a known issue
+
 
 ### Data Check: State Names -----------------------------------------------
 # check against US Census data: American National Standards Institute (ANSI) Codes for States, the District of Columbia, Puerto Rico, and the Insular Areas of the United States
