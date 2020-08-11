@@ -1,3 +1,6 @@
+# Ongoing development is continuing at the DataKind DC Fork (https://github.com/DataKind-DC/CARES) which uses this repo as foundation
+
+
 # CARES
 
 CARES Act data: PPP, EIDL and more.
